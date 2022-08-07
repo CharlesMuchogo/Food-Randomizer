@@ -1,6 +1,6 @@
-import java.util.ArrayList;
+
 import java.util.Scanner;
-import java.sql.*;
+
 
 public class Main {
 
@@ -49,6 +49,7 @@ public class Main {
             System.out.println("Press A to add food, and V to view today's meal, and Q to exit: \n");
            choice = scan.next().trim().toUpperCase();
         }
+        scan.close();
 
         }
 
