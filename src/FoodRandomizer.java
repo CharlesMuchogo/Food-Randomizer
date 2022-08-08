@@ -9,7 +9,8 @@ public class  FoodRandomizer {
     ArrayList<String> maindish = new ArrayList<>();
     ArrayList<String> stew = new ArrayList<>() ;
 
-    public  void retrieveData(String type){
+
+    public  String retrieveData(String type){
         try {
             Connection connection = DriverManager.getConnection(databaseUrl, username,password);
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM food  WHERE type = ?");
@@ -32,33 +33,32 @@ public class  FoodRandomizer {
         } catch (SQLException e){
             System.out.println("Caught error: " + e.toString());
         }
-    }
-
-    public void getFoodChoice(){
-        String randomStew = "";
-        String randomDish = "";
-
-        retrieveData("Main Dish");
-        retrieveData("Stew");
+        String randomFood = "";
         for (int i = 0; i < maindish.size(); i++)
         {
 
             int index = (int)(Math.random() * maindish.size());
+                if (type.equals("Main Dish") ){
+                    randomFood = maindish.get(index);
+                }else {
+                    randomFood = stew.get(index);
+                }
 
-        randomDish = maindish.get(index);
         }
-        for (int i = 0; i < stew.size(); i++)
-        {
+        return randomFood;
+    }
 
-            int index = (int)(Math.random() * stew.size());
+    public String getFoodChoice(){
 
-            randomStew = stew.get(index);
-        }
+
+        retrieveData("Main Dish");
+        retrieveData("Stew");
 
         maindish.clear();
         stew.clear();
 
-        System.out.println(" Today you will be having " + randomDish + " and " + randomStew + " \n");
+//        System.out.println();
+       return  " Today you will be having " + retrieveData("Main Dish") + " and " +  retrieveData("Stew") + " \n";
     }
 
     public void addData(String name, String type){
@@ -73,10 +73,8 @@ public class  FoodRandomizer {
             statement.executeUpdate();
             System.out.println("You have added " + name + " to " + type);
 
-        } catch (SQLException e){
+        } catch (SQLException | ClassNotFoundException e){
             System.out.println("Caught error: " + e.toString());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
     }
 }
